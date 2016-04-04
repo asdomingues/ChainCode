@@ -1,4 +1,8 @@
 *.class
+*.xml
+.idea
+*.swp
+ChainCode.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
