@@ -49,69 +49,34 @@ public abstract class Coordinates extends ImageES {
         return pixels;
     }
 
-    protected boolean validCoordinates (int[] coordinates) {
-        int x, y;
-        x = coordinates[0]; y = coordinates[1];
-        return x >= 0 && y >= 0 && x < image.getWidth() && y < image.getHeight();
-    }
-
-    protected boolean borderPixel (int[] pixel) {
-        int x, y;
-        boolean border = false;
-
-        x = pixel[0]; y = pixel[1];
-
-        if (image.getRGB(x, y) == -1)
-            border = false;
-
-        else if (x == 0 || y == 0 || x == image.getWidth() - 1
-                || y == image.getHeight() - 1)
-
-            border = true;
-
-        else if (image.getRGB (x + 1, y) == -1)
-            border = true;
-
-        else if (image.getRGB (x + 1, y + 1) == -1)
-            border = true;
-
-        else if (image.getRGB (x, y + 1) == -1)
-            border = true;
-
-        else if (image.getRGB (x - 1, y + 1) == -1)
-            border = true;
-
-        else if (image.getRGB (x - 1, y) == -1)
-            border = true;
-
-        else if (image.getRGB (x - 1, y - 1) == -1)
-            border = true;
-
-        else if (image.getRGB (x, y - 1) == -1)
-            border = true;
-
-        else if (image.getRGB (x + 1, y - 1) == -1)
-            border = true;
-
-        return border;
-    }
-
     protected int getDirection (int[] previousPixel, int first) {
-        int nextDirection = -1, x, y;
-        int[][] pixelsAround;
-        int i , j;
+        int nextDirection = -1;
+        int x, y;
+        int[][] around = getPixelsAround (previousPixel);
+        boolean[] pixels = new boolean[8];
+        int i;
 
-        pixelsAround = getPixelsAround (previousPixel);
+        for (i = 0; i < around.length; i++) {
 
-        for (j = 0, i = first; -1 == nextDirection && j < 8; j++, i = (i + 1)%8) {
-            if (validCoordinates(pixelsAround[i]) && borderPixel(pixelsAround[i])) {
-                x = pixelsAround[i][0]; y = pixelsAround[i][1];
-                if (-1 != image.getRGB(x, y))
-                    nextDirection = i;
+            x = around[i][0];
+            y = around[i][1];
+
+            // Se um ponto está fora da imagem ou é branco, é false;
+            if (x < 0 || y < 0 || x == image.getWidth () || y == image.getHeight () ||
+                    image.getRGB (x, y) == -1) {
+                pixels[i] = false;
             }
+            // Caso contrário, é true;
+            else pixels[i] = true;
+
         }
 
-        return nextDirection;
+        for (i = 0; i < pixels.length; i++) {
+            if (!pixels[(i+7)%8] && pixels[i]) return i;
+        }
+
+        // TODO: Exceção desta bagaça;
+        return -1;
     }
 
     protected int getDirection (int[] previousPixel) {

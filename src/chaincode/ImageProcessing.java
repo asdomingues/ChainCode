@@ -47,30 +47,17 @@ public class ImageProcessing extends Coordinates {
 
     public int totalBorderPixels () { return chainCode.size(); }
 
-    public ArrayList<Integer> chain() {
-        int[] first = getFirst();
-        int[] last = new int[2];
-        int[] previous = new int[2];
-        int lastDirection, previousDirection;
+    public ArrayList<Integer> chain () {
+        int[] first = getFirst ();
+        int lastDirection = getDirection (first);
+        int[] last = getNextPixel (first, 0);
 
-        lastDirection = getDirection (first);
-        chainCode.add(lastDirection);
+        chainCode.add (lastDirection);
 
-        last = getNextPixel(first, lastDirection);
-        previous = first;
-        previousDirection = lastDirection;
         while (!Arrays.equals (last, first)) {
-            lastDirection = getDirection (last, (lastDirection + 7) % 8);
-            /*while (lastDirection + 4 % 8 == previousDirection
-                || abs(lastDirection - previousDirection) > 1) {
-
-                lastDirection = getDirection (last, lastDirection + 1 % 8);
-            }*/
-
-            chainCode.add(lastDirection);
-            previous = last;
-            last = getNextPixel(last, lastDirection);
-            previousDirection = lastDirection;
+            lastDirection = getDirection (last);
+            chainCode.add (lastDirection);
+            last = getNextPixel (last, lastDirection);
         }
 
         return chainCode;
