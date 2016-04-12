@@ -74,7 +74,7 @@ public abstract class Coordinates extends ImageES {
         int x, y;
         int[][] around = getPixelsAround (previousPixel);
         boolean[] pixels = new boolean[8];
-        int i;
+        int i, j;
 
         for (i = 0; i < around.length; i++) {
 
@@ -95,8 +95,7 @@ public abstract class Coordinates extends ImageES {
 
         }
 
-        // Talvez colocar i = (lastPosition-1)%8 dê certo (fazendo algumas modificações, claro);
-        for (i = 0; i < pixels.length; i++) {
+        for (j = 0, i = (first + 7)%8; j < pixels.length; j++, i = (i + 1)%8) {
             if (!pixels[(i+7)%8] && pixels[i]) return i;
         }
 
