@@ -8,8 +8,17 @@ import static java.lang.Math.*;
  */
 public abstract class Coordinates extends ImageES {
 
+    /**
+     *
+     * @param name
+     * @throws IOException
+     */
     public Coordinates (String name) throws IOException { super (name); }
 
+    /**
+     *
+     * @return
+     */
     public int[] getFirst() {
         int x = 0, y;
         boolean found;
@@ -31,6 +40,11 @@ public abstract class Coordinates extends ImageES {
         return coordinates;
     }
 
+    /**
+     *
+     * @param start
+     * @return
+     */
     protected int[][] getPixelsAround (int[] start) {
         int[][] pixels = new int[8][2];
         int x, y;
@@ -49,6 +63,12 @@ public abstract class Coordinates extends ImageES {
         return pixels;
     }
 
+    /**
+     *
+     * @param previousPixel
+     * @param first
+     * @return
+     */
     protected int getDirection (int[] previousPixel, int first) {
         int nextDirection = -1;
         int x, y;
@@ -62,15 +82,20 @@ public abstract class Coordinates extends ImageES {
             y = around[i][1];
 
             // Se um ponto está fora da imagem ou é branco, é false;
-            if (x < 0 || y < 0 || x == image.getWidth () || y == image.getHeight () ||
-                    image.getRGB (x, y) == -1) {
+            if (x < 0 || y < 0 || x >= image.getWidth () || y >= image.getHeight ()) {
+                pixels[i] = false;
+            }
+            else if (image.getRGB (x, y) == -1) {
                 pixels[i] = false;
             }
             // Caso contrário, é true;
-            else pixels[i] = true;
+            else {
+                pixels[i] = true;
+            }
 
         }
 
+        // Talvez colocar i = (lastPosition-1)%8 dê certo (fazendo algumas modificações, claro);
         for (i = 0; i < pixels.length; i++) {
             if (!pixels[(i+7)%8] && pixels[i]) return i;
         }
@@ -79,18 +104,29 @@ public abstract class Coordinates extends ImageES {
         return -1;
     }
 
+    /**
+     *
+     * @param previousPixel
+     * @return
+     */
     protected int getDirection (int[] previousPixel) {
         return getDirection (previousPixel, 0);
     }
 
+    /**
+     *
+     * @param previous
+     * @param direction
+     * @return
+     */
     protected int[] getNextPixel (int[] previous, int direction) {
         int[] nextPixel = new int[2];
         int x = previous[0], y = previous[1];
 
-        if (direction < 2 || direction == 7) x++;
+        if ((direction >= 0 && direction < 2) || direction == 7) x++;
         if (direction > 0 && direction < 4) y++;
         if (direction > 2 && direction < 6) x--;
-        if (direction > 4) y--;
+        if (direction > 4 && direction <= 7) y--;
 
         nextPixel[0] = x;
         nextPixel[1] = y;
@@ -98,6 +134,10 @@ public abstract class Coordinates extends ImageES {
         return nextPixel;
     }
 
+    /**
+     *
+     * @return
+     */
     public double shapePerimeter () {
         double sum = 0.0;
 
