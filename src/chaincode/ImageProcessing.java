@@ -77,10 +77,14 @@ public class ImageProcessing extends Coordinates {
 
         chainCode.add (lastDirection);
 
+        // Enquanto não voltar ao começo;
         while (!Arrays.equals (last, first)) {
             System.out.println ("Direção: " + lastDirection);
+            // Pega a direção para a qual irá;
             lastDirection = getDirection (last, lastDirection);
+            // Coloca a direção dada no Array List;
             chainCode.add (lastDirection);
+            // Pega o próximo pixel para o qual irá;
             last = getNextPixel (last, lastDirection);
         }
 

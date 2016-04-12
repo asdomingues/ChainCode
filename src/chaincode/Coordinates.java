@@ -95,7 +95,7 @@ public abstract class Coordinates extends ImageES {
 
         }
 
-        for (j = 0, i = (first + 7)%8; j < pixels.length; j++, i = (i + 1)%8) {
+        for (j = 0, i = (first + 5)%8; j < pixels.length; j++, i = (i + 1)%8) {
             if (!pixels[(i+7)%8] && pixels[i]) return i;
         }
 
