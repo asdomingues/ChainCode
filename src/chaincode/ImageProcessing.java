@@ -9,7 +9,7 @@ import static java.lang.Math.*;
 /**
  * Realiza o processamento de uma imagem PNG em escalas de cinza, realizando o cálculo da altura e largura da imagem
  * e roda o algoritmo Chain Code sobre a imagem.
- * Criado por Allan Silva Domingues e Eduardo Garcia Misiuk em 11/04/16.
+ * Criada por Allan Silva Domingues e Eduardo Garcia Misiuk em 11/04/16.
  */
 public class ImageProcessing extends Coordinates {
 

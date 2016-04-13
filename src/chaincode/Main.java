@@ -14,19 +14,27 @@ public class Main {
      * @param args argumentos passados ao programa.
      */
     public static void main (String[] args) {
+        // Scanner para leitura de dados;
         Scanner input = new Scanner (System.in);
+        // Validação do dado recebido;
         boolean validData = false;
+        // Nome da imagem do tipo PNG em escalas de cinza a ser processada;
         String imageName = "";
+        // Instância da classe ImageProcessing, para realizar os processamentos na imagem dada;
         ImageProcessing sample = null;
+        // Coordenadas do início da imagem (pixel mais à esquerda acima);
         int[] coordinates;
         
         System.out.println ("Insira o nome da imagem que deseja abrir:");
 
+        // Validação da entrada do nome/caminho da imagem;
         while (!validData) {
+
+            // Validando a string recebida;
             while (!validData && input.hasNextLine ()) {
                 imageName = input.nextLine ();
                 if (imageName.length () == 0) {
-                    System.out.println ("Por favor insira o nome do novo cliente.");
+                    System.err.println ("Valor inválido.");
                     validData = false;
                 }
                 else {
@@ -34,6 +42,7 @@ public class Main {
                 }
             }
 
+            // Tentando abrir a imagem;
             try {
                 sample = new ImageProcessing (imageName);
                 validData = true;
@@ -45,13 +54,20 @@ public class Main {
             }
         }
 
+        // Recebendo as coordenadas do primeiro pixel da imagem;
         coordinates = sample.getFirst ();
+
         System.out.println ("Início: " + coordinates[0] + " " + coordinates[1]);
         System.out.println ("Largura: " + sample.getWidth ());
         System.out.println ("Altura: " + sample.getHeight ());
+
+        // Rodando o algoritmo do Chain Codes;
         sample.chain ();
+        // Imprimindo o resultado do algoritmo;
         System.out.print ("Chain codes: ");
         sample.printChainCodes ();
+
+        // Número total de pontos na borda e o perímetro;
         System.out.println ("Número de pontos na borda: " + sample.totalBorderPixels ());
         System.out.println ("Perímetro: " + sample.shapePerimeter ());
     }  
