@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Classe abstrata criada para abrir ujm arquivo de imagem e armazenar informações básicas sobre ele.
+ * Classe abstrata criada para abrir um arquivo de imagem e armazenar informações básicas sobre ele.
  * Criada por Allan Silva Domingues e Eduardo Garcia Misiuk em 11/04/16.
  */
 public abstract class ImageES {
